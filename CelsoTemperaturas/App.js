@@ -1,41 +1,48 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView, StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard, Button } from 'react-native';
+import axios from 'axios';
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 
-export default function App() {
-  const [height, setHeight] = useState(null);
-  const [weight, setWeight] = useState(null);
-  const [imc, setImc] = useState(null);
-  const [textButton, setTextButton] = useState("Calcular");
-  const [messageImc, setMessageImc] = useState("Preencha o peso e a altura");
 
-function imcCalculator() {
-  // (peso / (altura * altura))
-  setImc((weight / (height * height)).toFixed(2));
+
+
+export default function App() {
+  const [celsius, setCelsius] = useState(null);
+  const [fahr, setfahr] = useState(null);
+  const [textButton, setTextButton] = useState("Calcular");
+  const [messageFahr, setMessageFahr] = useState("Preencha a Temperatura");
+  // Coletor de temperatura
+
+
+
+function fahrCalculator() {
+  setfahr((celsius * 1.8 + 32).toFixed(0));
 }
 
 function validateImc () {
-  if (weight != null && height != null) {
+  if (celsius != null) {
     Keyboard.dismiss();
-    imcCalculator();
-    setHeight(null);
-    setWeight(null);
+    fahrCalculator();
+    setCelsius(null);
     setTextButton("Calcular Novamente");
-    setMessageImc("Seu IMC é igual a:");
+    setMessageFahr("A temperatura em celsius é:");
     return; //return mata a função, e vai sair. Sem precisar do else
   }
-  setImc(null);
+  setfahr(null);
   setTextButton("Calcular");
-  setMessageImc("Preencha o peso e a altura");
+  setMessageFahr("Preencha a temperatura");
 }
 
   return (
     <SafeAreaView style={styles.container}>
+
       <View style={styles.titleBox}>
         <Text style={styles.titleText}>Celso Temperaturas</Text>
-      </View>
+        </View>
+
+
 
       <View style={styles.content}>
         <Text style={styles.subTitle}>Conversor de Celsius para Fahrenheit</Text>
@@ -44,11 +51,12 @@ function validateImc () {
           <Text style={styles.label}>Temperatura em Celsius:</Text>
           <TextInput
             style={styles.input}
-            onChangeText={setHeight}
-            value={height ?? ''}
+            onChangeText={setCelsius}
+            value={celsius ?? ''}
             placeholder='Ex. 35'
             keyboardType='numeric'
           />
+          
         </View>
 
         <TouchableOpacity
@@ -59,11 +67,12 @@ function validateImc () {
           <Text style={styles.text}>{textButton}</Text>
         </TouchableOpacity>
 
-         <View style={styles.imcContainer}>
-           <Text style={styles.imcText}>{messageImc}</Text>
-           <Text style={styles.imcResult}>{imc}</Text>
+         <View style={styles.fahrContainer}>
+           <Text style={styles.fahrText}>{messageFahr}</Text>
+           <Text style={styles.fahrResult}>{fahr}</Text>
+           <Text style={styles.Fahrenheit}>Fahrenheit's</Text>
           </View>
-
+          
       </View>
 
       <StatusBar style="light" />
@@ -139,22 +148,27 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: 5,
   },
-  imcContainer: {
+  fahrContainer: {
     color: '#',
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
   },
-  imcText: {
+  fahrText: {
     fontSize: 18,
     color: '#',
     fontWeight: 'bold',
     alignItems: 'center',
   },
-  imcResult: {
+  fahrResult: {
     fontSize: 48,
     color: '#',
     fontWeight: 'bold',
-
+  },
+  Fahrenheit: {
+    fontSize: 20,
+    color: '#',
+    fontWeight: 'bold',
+    alignItems: 'center',
   },
 });

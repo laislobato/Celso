@@ -1,0 +1,9 @@
+git config --global user.email laislobato210109@gmail.com
+git config --global user.name laislobato 
+
+
+cd 
+npm i 
+npx expo start --localhost --android
+
+https://www.youtube.com/watch?v=8RpkXP_4GA4
